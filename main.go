@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/mail"
+	"strings"
 	"time"
 )
 
@@ -19,40 +20,60 @@ func main() {
 	fmt.Printf("Welcome in the booking service of %v\n", conferenceName)
 	fmt.Printf("There are %v tickets left\n", remainingTickets)
 
-	var userName string
-	var lastName string
-	var Email string
-	var numOfTickets uint
-
-	fmt.Println("Enter your name")
-	fmt.Scan(&userName)
-
-	fmt.Println("Enter your last name")
-	fmt.Scan(&lastName)
+	var bookings []string
 
 	for {
-		fmt.Println("Enter your Email")
-		fmt.Scan(&Email)
+		var userName string
+		var lastName string
+		var Email string
+		var numOfTickets uint
 
-		if isEmailValid(Email) {
-			break
+		fmt.Println("Enter your name")
+		fmt.Scan(&userName)
 
-		} else {
-			fmt.Println("Email is not valid")
+		fmt.Println("Enter your last name")
+		fmt.Scan(&lastName)
+
+		for {
+			fmt.Println("Enter your Email")
+			fmt.Scan(&Email)
+
+			if isEmailValid(Email) {
+				break
+
+			} else {
+				fmt.Println("Email is not valid")
+			}
 		}
+
+		for {
+			fmt.Println("Print number of tickets")
+			fmt.Scan(&numOfTickets)
+
+			if numOfTickets == 0 {
+				fmt.Println("Number is not valid, try again")
+				time.Sleep(2 * time.Second)
+			} else {
+				break
+			}
+		}
+
+		remainingTickets = remainingTickets - numOfTickets
+		bookings = append(bookings, userName+" "+lastName)
+
+		var response string
+		fmt.Println("Want to continue booking? Print 'Yes' or 'No'")
+		fmt.Scan(&response)
+		response = strings.TrimSpace(strings.ToLower(response))
+
+		if response == "no" || response == "n" {
+			break
+		} else if response == "yes" || response == "y" {
+			continue
+		} else {
+			fmt.Println("Not understood, exiting....")
+		}
+
 	}
 
-	for {
-		fmt.Println("Print number of tickets")
-		fmt.Scan(&numOfTickets)
-
-		if numOfTickets == 0 {
-			fmt.Println("Number is not valid, try again")
-			time.Sleep(2 * time.Second)
-		} else {
-			break
-		}
-	}
-
-	remainingTickets = remainingTickets - numOfTickets
 }
