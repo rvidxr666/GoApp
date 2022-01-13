@@ -21,6 +21,7 @@ func main() {
 	fmt.Printf("There are %v tickets left\n", remainingTickets)
 
 	var bookings []string
+	var firstnames []string
 
 	for {
 		var userName string
@@ -53,13 +54,25 @@ func main() {
 			if numOfTickets == 0 {
 				fmt.Println("Number is not valid, try again")
 				time.Sleep(2 * time.Second)
+			} else if numOfTickets > remainingTickets {
+				fmt.Println("You can't order", numOfTickets, "tickets because only", remainingTickets, "left!")
 			} else {
 				break
 			}
 		}
 
+		fmt.Println("You've ordered tickets on the name of", userName,
+			"confirmation will be sent on Email:", Email)
+
 		remainingTickets = remainingTickets - numOfTickets
 		bookings = append(bookings, userName+" "+lastName)
+		firstnames = append(firstnames, userName)
+
+		var noTicketRemaining bool = remainingTickets == 0
+		if noTicketRemaining {
+			fmt.Println("There are no tickets left!")
+			break
+		}
 
 		var response string
 		fmt.Println("Want to continue booking? Print 'Yes' or 'No'")
@@ -75,5 +88,7 @@ func main() {
 		}
 
 	}
+	fmt.Println(bookings)
+	fmt.Println(firstnames)
 
 }
