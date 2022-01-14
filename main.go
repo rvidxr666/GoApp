@@ -18,6 +18,20 @@ func greetUsers(conferenceName string, remainingTickets uint) {
 	fmt.Printf("There are %v tickets left\n", remainingTickets)
 }
 
+func isNameSurnameValid(Name string, NameOrSurname string) bool {
+	match, _ := regexp.MatchString("[0-9]", Name)
+	if match {
+		fmt.Printf("%v can't be numeric!\n", NameOrSurname)
+		return false
+	} else if len(Name) < 3 {
+		fmt.Printf("%v must be at least 3 characters long!\n", NameOrSurname)
+		return false
+	} else {
+		return true
+	}
+
+}
+
 func main() {
 	var conferenceName = "Go Conference"
 	const conferenceTickets uint = 50
@@ -38,19 +52,19 @@ func main() {
 			fmt.Println("Enter your name")
 			fmt.Scan(&userName)
 
-			match, _ := regexp.MatchString("[0-9]", userName)
-			if match {
-				fmt.Println("Name can't be numeric!")
-			} else if len(userName) < 3 {
-				fmt.Println("Name must be at least 3 characters long!")
-			} else {
+			if isNameSurnameValid(userName, "Name") {
 				break
 			}
-
 		}
 
-		fmt.Println("Enter your last name")
-		fmt.Scan(&lastName)
+		for {
+			fmt.Println("Enter your last name")
+			fmt.Scan(&lastName)
+
+			if isNameSurnameValid(lastName, "Surname") {
+				break
+			}
+		}
 
 		for {
 			fmt.Println("Enter your Email")
