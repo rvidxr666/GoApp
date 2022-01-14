@@ -13,13 +13,17 @@ func isEmailValid(email string) bool {
 	return err == nil
 }
 
+func greetUsers(conferenceName string, remainingTickets uint) {
+	fmt.Printf("Welcome in the booking service of %v\n", conferenceName)
+	fmt.Printf("There are %v tickets left\n", remainingTickets)
+}
+
 func main() {
 	var conferenceName = "Go Conference"
 	const conferenceTickets uint = 50
 	var remainingTickets uint = 50
 
-	fmt.Printf("Welcome in the booking service of %v\n", conferenceName)
-	fmt.Printf("There are %v tickets left\n", remainingTickets)
+	greetUsers(conferenceName, remainingTickets)
 
 	var bookings []string
 	var firstnames []string
