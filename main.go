@@ -29,7 +29,19 @@ func isNameSurnameValid(Name string, NameOrSurname string) bool {
 	} else {
 		return true
 	}
+}
 
+func isNumberValid(numOfTickets uint, remainingTickets uint) bool {
+	if numOfTickets == 0 {
+		fmt.Println("Number is not valid, try again")
+		time.Sleep(2 * time.Second)
+		return false
+	} else if numOfTickets > remainingTickets {
+		fmt.Println("You can't order", numOfTickets, "tickets because only", remainingTickets, "left!")
+		return false
+	} else {
+		return true
+	}
 }
 
 func main() {
@@ -51,7 +63,6 @@ func main() {
 		for {
 			fmt.Println("Enter your name")
 			fmt.Scan(&userName)
-
 			if isNameSurnameValid(userName, "Name") {
 				break
 			}
@@ -60,7 +71,6 @@ func main() {
 		for {
 			fmt.Println("Enter your last name")
 			fmt.Scan(&lastName)
-
 			if isNameSurnameValid(lastName, "Surname") {
 				break
 			}
@@ -69,10 +79,8 @@ func main() {
 		for {
 			fmt.Println("Enter your Email")
 			fmt.Scan(&Email)
-
 			if isEmailValid(Email) {
 				break
-
 			} else {
 				fmt.Println("Email is not valid")
 			}
@@ -82,13 +90,7 @@ func main() {
 			fmt.Println("Print number of tickets")
 			fmt.Scan(&numOfTickets)
 			fmt.Println(numOfTickets)
-
-			if numOfTickets == 0 {
-				fmt.Println("Number is not valid, try again")
-				time.Sleep(2 * time.Second)
-			} else if numOfTickets > remainingTickets {
-				fmt.Println("You can't order", numOfTickets, "tickets because only", remainingTickets, "left!")
-			} else {
+			if isNumberValid(numOfTickets, remainingTickets) {
 				break
 			}
 		}
