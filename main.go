@@ -8,9 +8,18 @@ import (
 	"time"
 )
 
-func isEmailValid(email string) bool {
-	_, err := mail.ParseAddress(email)
-	return err == nil
+func isEmailValid(email string) string {
+	for {
+		fmt.Println("Enter your Email")
+		fmt.Scan(&email)
+		_, err := mail.ParseAddress(email)
+		if err == nil {
+			return email
+		} else {
+			fmt.Println("Email is not valid")
+		}
+
+	}
 }
 
 func greetUsers(conferenceName string, remainingTickets uint) {
@@ -18,29 +27,33 @@ func greetUsers(conferenceName string, remainingTickets uint) {
 	fmt.Printf("There are %v tickets left\n", remainingTickets)
 }
 
-func isNameSurnameValid(Name string, NameOrSurname string) bool {
-	match, _ := regexp.MatchString("[0-9]", Name)
-	if match {
-		fmt.Printf("%v can't be numeric!\n", NameOrSurname)
-		return false
-	} else if len(Name) < 3 {
-		fmt.Printf("%v must be at least 3 characters long!\n", NameOrSurname)
-		return false
-	} else {
-		return true
+func isNameSurnameValid(Name string, NameOrSurname string) string {
+	for {
+		fmt.Printf("Enter your %v\n", NameOrSurname)
+		fmt.Scan(&Name)
+		match, _ := regexp.MatchString("[0-9]", Name)
+		if match {
+			fmt.Printf("%v can't be numeric!\n", NameOrSurname)
+		} else if len(Name) < 3 {
+			fmt.Printf("%v must be at least 3 characters long!\n", NameOrSurname)
+		} else {
+			return Name
+		}
 	}
 }
 
-func isNumberValid(numOfTickets uint, remainingTickets uint) bool {
-	if numOfTickets == 0 {
-		fmt.Println("Number is not valid, try again")
-		time.Sleep(2 * time.Second)
-		return false
-	} else if numOfTickets > remainingTickets {
-		fmt.Println("You can't order", numOfTickets, "tickets because only", remainingTickets, "left!")
-		return false
-	} else {
-		return true
+func isNumberValid(numOfTickets uint, remainingTickets uint) uint {
+	for {
+		fmt.Println("Print number of tickets")
+		fmt.Scan(&numOfTickets)
+		if numOfTickets == 0 {
+			fmt.Println("Number is not valid, try again")
+			time.Sleep(2 * time.Second)
+		} else if numOfTickets > remainingTickets {
+			fmt.Println("You can't order", numOfTickets, "tickets because only", remainingTickets, "left!")
+		} else {
+			return numOfTickets
+		}
 	}
 }
 
@@ -60,40 +73,10 @@ func main() {
 		var Email string
 		var numOfTickets uint
 
-		for {
-			fmt.Println("Enter your name")
-			fmt.Scan(&userName)
-			if isNameSurnameValid(userName, "Name") {
-				break
-			}
-		}
-
-		for {
-			fmt.Println("Enter your last name")
-			fmt.Scan(&lastName)
-			if isNameSurnameValid(lastName, "Surname") {
-				break
-			}
-		}
-
-		for {
-			fmt.Println("Enter your Email")
-			fmt.Scan(&Email)
-			if isEmailValid(Email) {
-				break
-			} else {
-				fmt.Println("Email is not valid")
-			}
-		}
-
-		for {
-			fmt.Println("Print number of tickets")
-			fmt.Scan(&numOfTickets)
-			fmt.Println(numOfTickets)
-			if isNumberValid(numOfTickets, remainingTickets) {
-				break
-			}
-		}
+		userName = isNameSurnameValid(userName, "Name")
+		lastName = isNameSurnameValid(lastName, "Surname")
+		numOfTickets = isNumberValid(numOfTickets, remainingTickets)
+		Email = isEmailValid(Email)
 
 		fmt.Println("You've ordered", numOfTickets, "tickets on the name of", userName,
 			"confirmation will be sent on Email:", Email)
