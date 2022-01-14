@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/mail"
+	"regexp"
 	"strings"
 	"time"
 )
@@ -29,8 +30,20 @@ func main() {
 		var Email string
 		var numOfTickets uint
 
-		fmt.Println("Enter your name")
-		fmt.Scan(&userName)
+		for {
+			fmt.Println("Enter your name")
+			fmt.Scan(&userName)
+
+			match, _ := regexp.MatchString("[0-9]", userName)
+			if match {
+				fmt.Println("Name can't be numeric!")
+			} else if len(userName) < 3 {
+				fmt.Println("Name must be at least 3 characters long!")
+			} else {
+				break
+			}
+
+		}
 
 		fmt.Println("Enter your last name")
 		fmt.Scan(&lastName)
@@ -50,6 +63,7 @@ func main() {
 		for {
 			fmt.Println("Print number of tickets")
 			fmt.Scan(&numOfTickets)
+			fmt.Println(numOfTickets)
 
 			if numOfTickets == 0 {
 				fmt.Println("Number is not valid, try again")
@@ -61,7 +75,7 @@ func main() {
 			}
 		}
 
-		fmt.Println("You've ordered tickets on the name of", userName,
+		fmt.Println("You've ordered", numOfTickets, "tickets on the name of", userName,
 			"confirmation will be sent on Email:", Email)
 
 		remainingTickets = remainingTickets - numOfTickets
