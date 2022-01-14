@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/mail"
 	"regexp"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -18,7 +19,6 @@ func isEmailValid(email string) string {
 		} else {
 			fmt.Println("Email is not valid")
 		}
-
 	}
 }
 
@@ -57,6 +57,15 @@ func isNumberValid(numOfTickets uint, remainingTickets uint) uint {
 	}
 }
 
+func RecordUserData(userName string, lastName string, Email string, numOfTickets string) map[string]string {
+	var userData = make(map[string]string)
+	userData["Name"] = userName
+	userData["Surname"] = lastName
+	userData["Email"] = Email
+	userData["NumberOfTickets"] = numOfTickets
+	return userData
+}
+
 func main() {
 	var conferenceName = "Go Conference"
 	const conferenceTickets uint = 50
@@ -64,8 +73,7 @@ func main() {
 
 	greetUsers(conferenceName, remainingTickets)
 
-	var bookings []string
-	var firstnames []string
+	var bookings = make([]map[string]string, 0)
 
 	for {
 		var userName string
@@ -82,8 +90,10 @@ func main() {
 			"confirmation will be sent on Email:", Email)
 
 		remainingTickets = remainingTickets - numOfTickets
-		bookings = append(bookings, userName+" "+lastName)
-		firstnames = append(firstnames, userName)
+
+		strNumOfTickets := strconv.FormatUint(uint64(numOfTickets), 10)
+		userData := RecordUserData(userName, lastName, Email, strNumOfTickets)
+		bookings = append(bookings, userData)
 
 		var noTicketRemaining bool = remainingTickets == 0
 		if noTicketRemaining {
@@ -106,6 +116,5 @@ func main() {
 
 	}
 	fmt.Println(bookings)
-	fmt.Println(firstnames)
 
 }
